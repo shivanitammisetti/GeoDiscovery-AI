@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Live Globe — GeoDiscovery</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#010812;--glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(100,180,255,0.15);--border2:rgba(100,180,255,0.3);
+  --text:#e8f4ff;--muted:rgba(200,225,255,0.5);
+  --accent:#00d4ff;--accent2:#1e90ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);}
+
+.navbar{
+  display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;
+  border-bottom:1px solid var(--border);
+  background:rgba(1,8,18,0.9);backdrop-filter:blur(20px);
+  position:relative;z-index:10;
+}
+.logo{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--accent);letter-spacing:2px;}
+.logo span{color:var(--text);}
+.nav-links{display:flex;gap:4px;margin-left:auto;align-items:center;}
+.nav-links a{padding:6px 14px;border-radius:8px;font-size:13px;color:var(--muted);text-decoration:none;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass2);}
+.nav-btn{padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+
+.globe-layout{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  height:calc(100vh - 56px);
+  width:100%;
+  overflow:hidden;
+}
+.globe-wrap{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  position:relative;
+}
+#globeViz{
+  width:100% !important;
+  height:100% !important;
+  display:block;
+}
+#globeViz{width:100%;height:100%;}
+
+.side-panel{
+  border-left:1px solid var(--border);
+  background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.panel-head{padding:16px;border-bottom:1px solid var(--border);}
+.panel-head h2{font-size:14px;font-weight:600;margin-bottom:12px;color:var(--accent);}
+
+.search-box{display:flex;gap:6px;margin-bottom:12px;}
+.search-box input{
+  flex:1;padding:9px 12px;border-radius:8px;
+  border:1px solid var(--border2);background:rgba(0,0,0,0.5);
+  color:var(--text);font-size:13px;outline:none;font-family:'Space Grotesk',sans-serif;
+}
+.search-box input:focus{border-color:var(--accent);}
+.search-box button{
+  padding:9px 12px;background:var(--glass2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);cursor:pointer;font-size:14px;transition:all 0.2s;
+}
+.search-box button:hover{background:rgba(0,180,255,0.15);}
+
+#event-count{font-size:11px;color:var(--muted);margin-bottom:10px;}
+
+.controls{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.ctrl-btn{
+  padding:6px 12px;background:var(--glass);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;
+  transition:all 0.2s;font-family:'Space Grotesk',sans-serif;
+}
+.ctrl-btn:hover{background:var(--glass2);border-color:var(--border2);}
+
+.filter-btns{display:flex;flex-wrap:wrap;gap:6px;}
+.filter-btn{
+  padding:5px 10px;border-radius:20px;font-size:11px;
+  border:1px solid var(--border);background:var(--glass);
+  color:var(--text);cursor:pointer;transition:all 0.2s;
+}
+.filter-btn.active,.filter-btn:hover{background:var(--accent2);border-color:var(--accent2);}
+
+.panel-scroll{flex:1;overflow-y:auto;padding:14px;}
+#event-panel{
+  display:none;padding:14px;background:var(--glass);
+  border:1px solid var(--border);border-radius:12px;margin-bottom:14px;
+}
+#event-panel h3{font-size:14px;margin-bottom:6px;}
+#event-panel a{display:block;margin-top:8px;font-size:12px;}
+
+.legend{padding:12px 14px;border-top:1px solid var(--border);}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);margin-bottom:4px;}
+.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* scrollbar */
+.panel-scroll::-webkit-scrollbar{width:4px;}
+.panel-scroll::-webkit-scrollbar-track{background:transparent;}
+.panel-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* links */
+a.btn-sm{
+  display:inline-flex;align-items:center;
+  padding:7px 14px;background:var(--glass2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-size:12px;text-decoration:none;transition:all 0.2s;
+}
+a.btn-sm:hover{border-color:var(--border2);background:rgba(0,180,255,0.1);}
+
+@media(max-width:768px){
+  .globe-layout{grid-template-columns:1fr;}
+  .side-panel{display:none;}
+  html,body{overflow:auto;}
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">GEO<span>DISCOVERY</span></div>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="globe.html" class="active">Globe</a>
+    <a href="datasets.html">Datasets</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="about.html">About</a>
+    <button class="nav-btn" onclick="Auth.logout()">Logout</button>
+  </div>
+</nav>
+<div class="globe-layout">
+  <div class="globe-wrap">
+    <div id="globeViz"></div>
+  </div>
+  <div class="side-panel">
+    <div class="panel-head">
+      <h2>🌐 Live Disaster Events</h2>
+      <form id="search-form" class="search-box">
+        <input id="location-search" placeholder="Search location..."/>
+        <button type="submit">🔎</button>
+      </form>
+      <div id="event-count">Loading events…</div>
+      <div class="controls">
+        <button class="ctrl-btn" id="btn-rotate">⏯ Rotate</button>
+        <button class="ctrl-btn" id="btn-theme">🌗 Theme</button>
+      </div>
+      <div class="filter-btns">
+        <button class="filter-btn active" data-cat="all" onclick="filterCategory('all')">All</button>
+        <button class="filter-btn" data-cat="Wildfires" onclick="filterCategory('Wildfires')">🔥 Fire</button>
+        <button class="filter-btn" data-cat="Floods" onclick="filterCategory('Floods')">🌊 Flood</button>
+        <button class="filter-btn" data-cat="Volcanoes" onclick="filterCategory('Volcanoes')">🌋 Volcano</button>
+        <button class="filter-btn" data-cat="Storms" onclick="filterCategory('Severe Storms')">🌪 Storm</button>
+      </div>
+    </div>
+    <div class="panel-scroll">
+      <div id="event-panel"></div>
+      <p style="color:var(--muted);font-size:12px;line-height:1.6">Click any marker on the globe to see event details.</p>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="ldot" style="background:#ef4444"></div>Wildfire</div>
+      <div class="legend-item"><div class="ldot" style="background:#3b82f6"></div>Flood</div>
+      <div class="legend-item"><div class="ldot" style="background:#f59e0b"></div>Volcano</div>
+      <div class="legend-item"><div class="ldot" style="background:#a78bfa"></div>Storm</div>
+      <div class="legend-item"><div class="ldot" style="background:#22d3ee"></div>Ice</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/globe.gl@2.27.0/dist/globe.gl.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/globe.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => { Auth.requireAuth(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dataset Details — GeoDiscovery</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#010812;--glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(100,180,255,0.15);--border2:rgba(100,180,255,0.3);
+  --text:#e8f4ff;--muted:rgba(200,225,255,0.5);--accent:#00d4ff;--accent2:#1e90ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);}
+.nebula{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);}
+.n1{width:500px;height:500px;top:-100px;right:0;background:radial-gradient(circle,rgba(30,144,255,0.10),transparent 70%);}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;border-bottom:1px solid var(--border);background:rgba(1,8,18,0.85);backdrop-filter:blur(20px);}
+.logo{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--accent);letter-spacing:2px;}
+.logo span{color:var(--text);}
+.nav-links{display:flex;gap:4px;margin-left:auto;align-items:center;}
+.nav-links a{padding:6px 14px;border-radius:8px;font-size:13px;color:var(--muted);text-decoration:none;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass2);}
+.nav-btn{padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+
+.main{max-width:860px;margin:0 auto;padding:36px 24px;position:relative;z-index:1;}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+  background:var(--glass);border:1px solid var(--border);border-radius:8px;
+  color:var(--muted);font-size:13px;text-decoration:none;transition:all 0.2s;margin-bottom:24px;
+}
+.back-btn:hover{color:var(--text);border-color:var(--border2);}
+
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.tag-wildfire{background:rgba(239,68,68,0.2);color:#fca5a5;}
+.tag-flood{background:rgba(59,130,246,0.2);color:#93c5fd;}
+.tag-volcano{background:rgba(245,158,11,0.2);color:#fcd34d;}
+.tag-cyclone{background:rgba(167,139,250,0.2);color:#c4b5fd;}
+.tag-earthquake{background:rgba(249,115,22,0.2);color:#fdba74;}
+.tag-avalanche{background:rgba(34,211,238,0.2);color:#67e8f9;}
+
+.level-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;text-transform:uppercase;margin-left:8px;}
+.level-beginner{background:rgba(16,185,129,0.2);color:#6ee7b7;}
+.level-intermediate{background:rgba(245,158,11,0.2);color:#fcd34d;}
+.level-advanced{background:rgba(239,68,68,0.2);color:#fca5a5;}
+
+.detail-header{margin:16px 0 8px;}
+.detail-title{font-family:'Orbitron',monospace;font-size:24px;font-weight:700;margin-bottom:6px;line-height:1.3;}
+.detail-sat{font-size:14px;color:var(--muted);margin-bottom:20px;}
+.detail-desc{font-size:15px;line-height:1.8;color:var(--text);margin-bottom:28px;}
+
+.use-cases{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;}
+.use-cases h3{font-size:14px;font-weight:600;margin-bottom:14px;color:var(--accent);}
+.use-cases ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.use-cases li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.use-cases li::before{content:'→';color:var(--accent2);font-size:12px;}
+
+.tags-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.chip{padding:4px 12px;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--muted);}
+
+.action-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;}
+.btn-primary{padding:12px 24px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:10px;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-outline{padding:12px 24px;background:var(--glass);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;}
+.btn-outline:hover{background:var(--glass2);border-color:var(--accent);}
+.btn-save{padding:12px 24px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;color:#6ee7b7;font-family:'Space Grotesk',sans-serif;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;}
+.btn-save:hover{background:rgba(16,185,129,0.2);}
+
+.rec-section h3{font-size:16px;font-weight:600;margin-bottom:16px;}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.rec-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all 0.2s;}
+.rec-card:hover{border-color:var(--border2);background:var(--glass2);transform:translateY(-2px);}
+
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent2);border-radius:50%;animation:spin 0.8s linear infinite;margin:60px auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+  transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none;min-width:220px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:#0a2a1a;border:1px solid rgba(16,185,129,0.4);color:#6ee7b7;}
+.toast.error{background:#2a0a0a;border:1px solid rgba(239,68,68,0.4);color:#fca5a5;}
+.toast.info{background:#0a1a2a;border:1px solid var(--border2);color:var(--text);}
+</style>
+</head>
+<body>
+<div class="nebula n1"></div>
+
+<nav class="navbar">
+  <div class="logo">GEO<span>DISCOVERY</span></div>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="datasets.html" class="active">Datasets</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="profile.html">Profile</a>
+    <button class="nav-btn" onclick="Auth.logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="main">
+  <a href="datasets.html" class="back-btn">← Back to Datasets</a>
+  <div id="dataset-detail"></div>
+  <div id="recommendations" class="rec-section" style="margin-top:40px"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/datasets.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await Auth.requireAuth();
+});
+
+// ── Toast helper ─────────────────────────────────────────────────────────────
+window.showToast = function(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = '';
+  t.className = `toast ${type}`;
+  const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+  t.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+};
+
+// ── Override saveDataset to use toast ────────────────────────────────────────
+window.saveDataset = async function(id) {
+  if (!Auth.isLoggedIn()) {
+    showToast('Please log in to save datasets.', 'error');
+    return;
+  }
+  try {
+    await API.saveDataset(id);
+    showToast('Dataset saved to your profile! 🔖', 'success');
+  } catch (e) {
+    showToast(e.message || 'Could not save dataset.', 'error');
+  }
+};
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>

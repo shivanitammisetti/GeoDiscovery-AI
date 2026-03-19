@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback — GeoDiscovery</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <span class="logo">🌍 GeoDiscovery</span>
+  <nav>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/datasets.html">Datasets</a>
+    <a href="/feedback.html" class="active">Feedback</a>
+    <button class="btn" onclick="Auth.logout()">Logout</button>
+  </nav>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-link" href="/dashboard.html">🏠 Dashboard</a>
+    <a class="sidebar-link" href="/datasets.html">📊 Datasets</a>
+    <a class="sidebar-link" href="/blogs.html">📚 Blogs</a>
+    <a class="sidebar-link active" href="/feedback.html">💬 Feedback</a>
+    <a class="sidebar-link" href="/profile.html">👤 Profile</a>
+  </aside>
+
+  <main class="main-content">
+    <h1 class="page-title">Community Feedback</h1>
+    <p class="page-subtitle">Share your experience or read what others say</p>
+
+    <!-- Submit -->
+    <div class="card" style="margin-bottom:32px;max-width:560px">
+      <h3 style="margin-bottom:16px">Leave a Review</h3>
+      <div id="feedback-msg"></div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <label style="color:var(--muted);font-size:14px">Rating:</label>
+          <select id="fb-rating" class="filter-select">
+            <option value="5">⭐⭐⭐⭐⭐ 5</option>
+            <option value="4">⭐⭐⭐⭐ 4</option>
+            <option value="3">⭐⭐⭐ 3</option>
+            <option value="2">⭐⭐ 2</option>
+            <option value="1">⭐ 1</option>
+          </select>
+        </div>
+        <textarea id="fb-comment" placeholder="Share your experience with GeoDiscovery..."
+          style="padding:12px;background:var(--glass);border:1px solid var(--border);
+          border-radius:8px;color:var(--text);font-size:14px;resize:vertical;min-height:100px;outline:none">
+        </textarea>
+        <button class="btn btn-primary" onclick="submitFeedback()">Submit Review</button>
+      </div>
+    </div>
+
+    <!-- Reviews list -->
+    <h2 style="font-size:18px;margin-bottom:16px">Community Reviews</h2>
+    <div id="feedback-list" class="grid-2"></div>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/feedback.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Auth.requireAuth();
+  });
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>

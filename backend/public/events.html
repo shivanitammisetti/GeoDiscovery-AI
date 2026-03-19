@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>NASA Events — GeoDiscovery</title>
+  <link rel="stylesheet" href="/css/style.css" />  <!-- ← FIXED path -->
+</head>
+<body>
+
+<nav class="navbar">
+  <span class="logo">🌍 GeoDiscovery</span>
+  <nav>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/globe.html">Globe</a>
+    <a href="/datasets.html">Datasets</a>
+    <button class="btn" onclick="Auth.logout()">Logout</button>
+  </nav>
+</nav>
+
+<div class="main-content">
+  <h1 class="page-title">🌍 Live NASA Disaster Events</h1>
+  <p class="page-subtitle">Real-time events from NASA EONET</p>
+  <div id="events-container" class="grid-3"></div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/events.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Auth.requireAuth();
+  });
+</script>
+</body>
+</html>

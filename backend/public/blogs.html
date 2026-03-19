@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blogs — GeoDiscovery</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <span class="logo">🌍 GeoDiscovery</span>
+  <nav>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/datasets.html">Datasets</a>
+    <a href="/blogs.html" class="active">Blogs</a>
+    <a href="/profile.html">Profile</a>
+    <a href="about.html">About</a>
+    <button class="btn" onclick="Auth.logout()">Logout</button>
+  </nav>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <a class="sidebar-link" href="/dashboard.html">🏠 Dashboard</a>
+    <a class="sidebar-link" href="/globe.html">🌍 Explore Globe</a>
+    <a class="sidebar-link" href="/datasets.html">📊 Datasets</a>
+    <a class="sidebar-link active" href="/blogs.html">📚 Blogs</a>
+    <a class="sidebar-link" href="/profile.html">👤 Profile</a>
+  </aside>
+
+  <main class="main-content">
+    <h1 class="page-title">Research Blogs</h1>
+    <p class="page-subtitle">Expert articles on NASA Earth science datasets</p>
+    <div id="blog-grid" class="grid-2"></div>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/blogs.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Auth.requireAuth();
+  });
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>

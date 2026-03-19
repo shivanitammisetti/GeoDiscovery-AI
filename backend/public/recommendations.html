@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Recommendations — GeoDiscovery</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#010812;--bg2:#050d1f;--bg3:#0a1428;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(100,180,255,0.15);--border2:rgba(100,180,255,0.3);
+  --text:#e8f4ff;--muted:rgba(200,225,255,0.5);
+  --accent:#00d4ff;--accent2:#1e90ff;--sidebar-w:220px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);}
+.nebula{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);}
+.n1{width:500px;height:500px;top:-100px;right:0;background:radial-gradient(circle,rgba(30,144,255,0.10),transparent 70%);}
+
+.navbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;
+  border-bottom:1px solid var(--border);background:rgba(1,8,18,0.85);backdrop-filter:blur(20px);
+}
+.logo{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--accent);letter-spacing:2px;}
+.logo span{color:var(--text);}
+.nav-links{display:flex;gap:4px;margin-left:auto;align-items:center;}
+.nav-links a{padding:6px 14px;border-radius:8px;font-size:13px;color:var(--muted);text-decoration:none;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass2);}
+.nav-btn{padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+
+.layout{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:calc(100vh - 56px);position:relative;z-index:1;}
+.sidebar{border-right:1px solid var(--border);padding:20px 10px;background:rgba(0,0,0,0.2);display:flex;flex-direction:column;gap:4px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+.slink{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;color:var(--muted);font-size:13px;text-decoration:none;transition:all 0.2s;border:1px solid transparent;}
+.slink:hover,.slink.active{background:var(--glass2);border-color:var(--border);color:var(--text);}
+.main{padding:32px;}
+.page-title{font-family:'Orbitron',monospace;font-size:22px;font-weight:700;margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:13px;margin-bottom:28px;}
+
+.filter-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.filter-select{
+  padding:11px 16px;background:var(--glass2);border:1px solid var(--border2);
+  border-radius:10px;color:var(--text);font-size:14px;outline:none;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;
+}
+.filter-select option{background:#0a1428;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.card{
+  background:var(--glass);border:1px solid var(--border);border-radius:14px;
+  padding:20px;cursor:pointer;transition:all 0.25s;display:flex;flex-direction:column;gap:10px;
+}
+.card:hover{border-color:var(--border2);background:var(--glass2);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,144,255,0.15);}
+.tag{
+  display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.5px;
+}
+.tag-wildfire{background:rgba(239,68,68,0.2);color:#fca5a5;}
+.tag-flood{background:rgba(59,130,246,0.2);color:#93c5fd;}
+.tag-volcano{background:rgba(245,158,11,0.2);color:#fcd34d;}
+.tag-cyclone{background:rgba(167,139,250,0.2);color:#c4b5fd;}
+.tag-earthquake{background:rgba(249,115,22,0.2);color:#fdba74;}
+.tag-avalanche{background:rgba(34,211,238,0.2);color:#67e8f9;}
+.card h3{font-size:15px;font-weight:600;color:var(--text);}
+.card .sat{font-size:12px;color:var(--muted);}
+.card p{font-size:12px;color:var(--muted);line-height:1.5;}
+.btn-sm{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
+  background:var(--glass2);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-size:12px;text-decoration:none;transition:all 0.2s;margin-top:auto;
+}
+.btn-sm:hover{border-color:var(--border2);}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent2);border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media(max-width:768px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.main{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="nebula n1"></div>
+
+<nav class="navbar">
+  <div class="logo">GEO<span>DISCOVERY</span></div>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="datasets.html">Datasets</a>
+    <a href="recommendations.html" class="active">Recommendations</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="about.html">About</a>
+    <button class="nav-btn" onclick="Auth.logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <a class="slink" href="dashboard.html">🏠 Dashboard</a>
+    <a class="slink" href="globe.html">🌍 Live Globe</a>
+    <a class="slink" href="datasets.html">📊 Datasets</a>
+    <a class="slink active" href="recommendations.html">🤖 Recommendations</a>
+    <a class="slink" href="blogs.html">📚 Blogs</a>
+    <a class="slink" href="feedback.html">💬 Feedback</a>
+    <a class="slink" href="profile.html">👤 Profile</a>
+  </aside>
+
+  <main class="main">
+    <div class="page-title">🤖 AI Recommendations</div>
+    <p class="page-sub">Smart dataset suggestions based on disaster type and your role</p>
+
+    <div class="filter-row">
+      <label style="font-size:13px;color:var(--muted)">Select disaster type:</label>
+      <select id="rec-event" class="filter-select">
+        <option value="flood">🌊 Flood</option>
+        <option value="cyclone">🌪 Cyclone</option>
+        <option value="volcano">🌋 Volcano</option>
+        <option value="wildfire">🔥 Wildfire</option>
+        <option value="earthquake">⚡ Earthquake</option>
+        <option value="avalanche">❄️ Avalanche</option>
+      </select>
+    </div>
+
+    <div id="rec-grid" class="grid"></div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/datasets.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Auth.requireAuth();
+  });
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>

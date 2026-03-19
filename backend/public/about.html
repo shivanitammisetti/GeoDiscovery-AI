@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About — GeoDiscovery</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#010812;--glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(100,180,255,0.15);--border2:rgba(100,180,255,0.3);
+  --text:#e8f4ff;--muted:rgba(200,225,255,0.5);--accent:#00d4ff;--accent2:#1e90ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);}
+.nebula{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);}
+.n1{width:600px;height:600px;top:-200px;left:-100px;background:radial-gradient(circle,rgba(30,144,255,0.12),transparent 70%);}
+.n2{width:500px;height:500px;bottom:-100px;right:-100px;background:radial-gradient(circle,rgba(0,212,255,0.10),transparent 70%);}
+
+.navbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;
+  border-bottom:1px solid var(--border);background:rgba(1,8,18,0.85);backdrop-filter:blur(20px);
+}
+.logo{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--accent);letter-spacing:2px;}
+.logo span{color:var(--text);}
+.nav-links{display:flex;gap:4px;margin-left:auto;align-items:center;}
+.nav-links a{padding:6px 14px;border-radius:8px;font-size:13px;color:var(--muted);text-decoration:none;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass2);}
+.nav-btn{padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+
+.content{max-width:800px;margin:0 auto;padding:60px 24px;position:relative;z-index:1;}
+
+/* Hero */
+.about-hero{text-align:center;margin-bottom:64px;}
+.about-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;
+  border:1px solid var(--border2);background:rgba(0,212,255,0.06);
+  font-size:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;
+}
+.about-hero h1{
+  font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,#fff,#a0d4ff,var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.about-hero p{font-size:1rem;color:var(--muted);line-height:1.8;max-width:600px;margin:0 auto;}
+
+/* Section */
+.section{margin-bottom:48px;}
+.section-title{
+  font-family:'Orbitron',monospace;font-size:16px;font-weight:700;
+  color:var(--accent);margin-bottom:20px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+
+/* Feature cards */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:16px;}
+.feat-card{
+  background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:20px;
+  transition:all 0.3s;
+}
+.feat-card:hover{border-color:var(--border2);background:var(--glass2);transform:translateY(-3px);}
+.feat-icon{font-size:28px;margin-bottom:10px;}
+.feat-title{font-size:14px;font-weight:600;margin-bottom:6px;}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* Tech stack */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+.tech-item{
+  background:var(--glass);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;display:flex;align-items:center;gap:10px;
+  transition:all 0.2s;
+}
+.tech-item:hover{border-color:var(--border2);}
+.tech-icon{font-size:20px;}
+.tech-name{font-size:13px;font-weight:500;}
+.tech-type{font-size:11px;color:var(--muted);}
+
+/* Role cards */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.role-card{
+  background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:24px;
+}
+.role-card.student{border-color:rgba(0,212,255,0.3);}
+.role-card.scientist{border-color:rgba(245,158,11,0.3);}
+.role-icon{font-size:32px;margin-bottom:12px;}
+.role-title{font-size:16px;font-weight:600;margin-bottom:8px;}
+.role-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.role-list li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.role-list li::before{content:'→';color:var(--accent);font-size:11px;}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:16px;position:relative;}
+.tl-item:not(:last-child) .tl-line{position:absolute;left:11px;top:24px;bottom:-8px;width:2px;background:var(--border);}
+.tl-dot{width:24px;height:24px;border-radius:50%;background:var(--accent2);border:3px solid var(--bg);flex-shrink:0;margin-top:4px;z-index:1;}
+.tl-content{padding-bottom:24px;flex:1;}
+.tl-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+.tl-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* CTA */
+.cta{
+  text-align:center;padding:40px;background:var(--glass);
+  border:1px solid var(--border2);border-radius:20px;margin-top:48px;
+}
+.cta h2{font-family:'Orbitron',monospace;font-size:20px;margin-bottom:12px;color:var(--accent);}
+.cta p{color:var(--muted);font-size:14px;margin-bottom:24px;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{padding:12px 28px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:10px;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-ghost{padding:12px 28px;background:var(--glass2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+
+@media(max-width:600px){.role-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="nebula n1"></div>
+<div class="nebula n2"></div>
+
+<nav class="navbar">
+  <div class="logo">GEO<span>DISCOVERY</span></div>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="datasets.html">Datasets</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="about.html" class="active">About</a>
+    <button class="nav-btn" onclick="Auth.logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="content">
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="about-badge">🛰 NASA Earth Science Platform</div>
+    <h1>About GeoDiscovery</h1>
+    <p>A role-based NASA Earth science data platform that connects students and researchers to satellite datasets, live disaster events, and AI-powered recommendations.</p>
+  </div>
+
+  <!-- What it does -->
+  <div class="section">
+    <div class="section-title">What GeoDiscovery Does</div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon">🌍</div>
+        <div class="feat-title">Live Disaster Globe</div>
+        <div class="feat-desc">Real-time 3D visualization of NASA EONET events — wildfires, floods, volcanoes and more on an interactive globe.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Dataset Explorer</div>
+        <div class="feat-desc">Browse 12+ curated NASA satellite datasets filtered by your role. Students get beginner datasets, scientists get advanced ones.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🤖</div>
+        <div class="feat-title">AI Recommendations</div>
+        <div class="feat-desc">Content-based recommendation engine suggests related datasets based on disaster type and shared tags.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📚</div>
+        <div class="feat-title">Research Blogs</div>
+        <div class="feat-desc">Expert articles explaining how satellite remote sensing works for disaster monitoring — from MODIS to SAR.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔍</div>
+        <div class="feat-title">Smart Search</div>
+        <div class="feat-desc">Search-as-you-type suggestions powered by backend API. Filter datasets by event type, difficulty level, or sort order.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💬</div>
+        <div class="feat-title">Community Feedback</div>
+        <div class="feat-desc">Users can leave reviews and ratings. New visitors can read community feedback before exploring datasets.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Who is it for -->
+  <div class="section">
+    <div class="section-title">Who Is It For</div>
+    <div class="role-grid">
+      <div class="role-card student">
+        <div class="role-icon">🎓</div>
+        <div class="role-title">Students</div>
+        <ul class="role-list">
+          <li>Access beginner and intermediate datasets</li>
+          <li>Learn about satellite remote sensing</li>
+          <li>Read expert blogs with explanations</li>
+          <li>Explore live disaster events on globe</li>
+          <li>Save datasets for later reference</li>
+        </ul>
+      </div>
+      <div class="role-card scientist">
+        <div class="role-icon">🔬</div>
+        <div class="role-title">Scientists / Researchers</div>
+        <ul class="role-list">
+          <li>Access all datasets including advanced</li>
+          <li>SAR, InSAR, multispectral analysis tools</li>
+          <li>AI-powered dataset recommendations</li>
+          <li>Direct links to official NASA portals</li>
+          <li>Filter by resolution and satellite mission</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech stack -->
+  <div class="section">
+    <div class="section-title">Technology Stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-icon">🟢</div><div><div class="tech-name">Node.js + Express</div><div class="tech-type">Backend API</div></div></div>
+      <div class="tech-item"><div class="tech-icon">🍃</div><div><div class="tech-name">MongoDB Atlas</div><div class="tech-type">Cloud Database</div></div></div>
+      <div class="tech-item"><div class="tech-icon">🔐</div><div><div class="tech-name">JWT Auth</div><div class="tech-type">Authentication</div></div></div>
+      <div class="tech-item"><div class="tech-icon">🌍</div><div><div class="tech-name">globe.gl</div><div class="tech-type">3D Globe</div></div></div>
+      <div class="tech-item"><div class="tech-icon">🛰</div><div><div class="tech-name">NASA EONET API</div><div class="tech-type">Live Events</div></div></div>
+      <div class="tech-item"><div class="tech-icon">🎨</div><div><div class="tech-name">Vanilla HTML/CSS/JS</div><div class="tech-type">Frontend</div></div></div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section">
+    <div class="section-title">How It Works</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title">1. Select your role</div>
+          <div class="tl-desc">Choose Student or Scientist. Your role determines which datasets you see — students get beginner to intermediate, scientists get everything including advanced SAR and multispectral data.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title">2. Explore the live globe</div>
+          <div class="tl-desc">The 3D globe shows real-time NASA EONET disaster events as colored markers. Click any marker to see event details and related datasets.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title">3. Discover datasets</div>
+          <div class="tl-desc">Search by keyword, filter by disaster type, sort by difficulty or name. Each dataset card shows satellite, resolution, use cases, and links to the official NASA portal.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <div class="tl-title">4. Get AI recommendations</div>
+          <div class="tl-desc">Our content-based recommender scores datasets by shared disaster type and tags, surfacing the most relevant ones for your research.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">5. Save and revisit</div>
+          <div class="tl-desc">Save datasets to your profile for quick access. Leave feedback to help other researchers find the best datasets for their work.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Ready to Explore?</h2>
+    <p>Start discovering NASA Earth science datasets tailored to your research level.</p>
+    <div class="cta-btns">
+      <a href="dashboard.html" class="btn-primary">🚀 Go to Dashboard</a>
+      <a href="globe.html" class="btn-ghost">🌍 View Live Globe</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Auth.requireAuth();
+  });
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>

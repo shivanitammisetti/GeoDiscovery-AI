@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog — GeoDiscovery</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <span class="logo">🌍 GeoDiscovery</span>
+  <nav>
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/blogs.html" class="active">Blogs</a>
+    <a href="/datasets.html">Datasets</a>
+    <button class="btn" onclick="Auth.logout()">Logout</button>
+  </nav>
+</nav>
+
+<div class="main-content">
+  <a href="/blogs.html" class="btn" style="margin-bottom:24px;display:inline-flex">← Back to Blogs</a>
+  <div id="blog-detail"></div>
+  <div id="related-datasets" style="margin-top:40px"></div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/blogs.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Auth.requireAuth();
+  });
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>

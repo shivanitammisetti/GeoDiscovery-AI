@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Profile — GeoDiscovery</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#010812;--glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(100,180,255,0.15);--border2:rgba(100,180,255,0.3);
+  --text:#e8f4ff;--muted:rgba(200,225,255,0.5);--accent:#00d4ff;--accent2:#1e90ff;--sidebar-w:220px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);}
+.nebula{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);}
+.n1{width:500px;height:500px;top:-100px;right:0;background:radial-gradient(circle,rgba(30,144,255,0.10),transparent 70%);}
+
+.navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:12px;padding:0 24px;height:56px;border-bottom:1px solid var(--border);background:rgba(1,8,18,0.85);backdrop-filter:blur(20px);}
+.logo{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--accent);letter-spacing:2px;}
+.logo span{color:var(--text);}
+.nav-links{display:flex;gap:4px;margin-left:auto;align-items:center;}
+.nav-links a{padding:6px 14px;border-radius:8px;font-size:13px;color:var(--muted);text-decoration:none;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--glass2);}
+.nav-btn{padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+
+.layout{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:calc(100vh - 56px);position:relative;z-index:1;}
+.sidebar{border-right:1px solid var(--border);padding:20px 10px;background:rgba(0,0,0,0.2);display:flex;flex-direction:column;gap:4px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+.slink{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;color:var(--muted);font-size:13px;text-decoration:none;transition:all 0.2s;border:1px solid transparent;}
+.slink:hover,.slink.active{background:var(--glass2);border-color:var(--border);color:var(--text);}
+
+.main{padding:32px;overflow-y:auto;}
+.page-title{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:13px;margin-bottom:28px;}
+
+/* Profile card */
+.profile-card{
+  background:var(--glass);border:1px solid var(--border);border-radius:16px;
+  padding:28px;margin-bottom:28px;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;
+}
+
+/* Avatar */
+.avatar-wrap{position:relative;flex-shrink:0;}
+.avatar{
+  width:100px;height:100px;border-radius:50%;
+  border:3px solid var(--border2);object-fit:cover;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;overflow:hidden;cursor:pointer;
+  transition:border-color 0.3s;
+}
+.avatar:hover{border-color:var(--accent);}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.avatar-edit{
+  position:absolute;bottom:2px;right:2px;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--accent2);border:2px solid var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;transition:all 0.2s;
+}
+.avatar-edit:hover{background:var(--accent);transform:scale(1.1);}
+#photo-input{display:none;}
+
+/* User info */
+.user-info{flex:1;min-width:200px;}
+.user-name{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;margin-bottom:4px;}
+.user-email{font-size:13px;color:var(--muted);margin-bottom:12px;}
+.user-role{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  background:rgba(0,212,255,0.1);border:1px solid var(--border2);color:var(--accent);
+}
+.user-joined{font-size:12px;color:var(--muted);margin-top:10px;}
+
+/* Stats */
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;}
+.stat{
+  background:var(--glass2);border:1px solid var(--border);border-radius:10px;
+  padding:12px 20px;text-align:center;min-width:90px;
+}
+.stat-num{font-size:22px;font-weight:700;color:var(--accent);}
+.stat-label{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Section */
+.sec-title{font-size:15px;font-weight:600;margin-bottom:14px;color:var(--text);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all 0.2s;}
+.card:hover{border-color:var(--border2);background:var(--glass2);transform:translateY(-2px);}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase;}
+.tag-wildfire{background:rgba(239,68,68,0.2);color:#fca5a5;}
+.tag-flood{background:rgba(59,130,246,0.2);color:#93c5fd;}
+.tag-volcano{background:rgba(245,158,11,0.2);color:#fcd34d;}
+.tag-cyclone{background:rgba(167,139,250,0.2);color:#c4b5fd;}
+.tag-earthquake{background:rgba(249,115,22,0.2);color:#fdba74;}
+.tag-avalanche{background:rgba(34,211,238,0.2);color:#67e8f9;}
+.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent2);border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.empty{color:var(--muted);font-size:13px;padding:20px 0;}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  padding:12px 20px;background:#0a1e3a;border:1px solid var(--border2);
+  border-radius:10px;font-size:13px;color:var(--text);
+  transform:translateY(80px);opacity:0;transition:all 0.3s;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:768px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.main{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="nebula n1"></div>
+
+<nav class="navbar">
+  <div class="logo">GEO<span>DISCOVERY</span></div>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="datasets.html">Datasets</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="about.html">About</a>
+    <a href="profile.html" class="active">Profile</a>
+    <button class="nav-btn" onclick="Auth.logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <a class="slink" href="dashboard.html">🏠 Dashboard</a>
+    <a class="slink" href="globe.html">🌍 Live Globe</a>
+    <a class="slink" href="datasets.html">📊 Datasets</a>
+    <a class="slink" href="recommendations.html">🤖 Recommendations</a>
+    <a class="slink" href="blogs.html">📚 Blogs</a>
+    <a class="slink" href="feedback.html">💬 Feedback</a>
+    <a class="slink active" href="profile.html">👤 Profile</a>
+  </aside>
+
+  <main class="main">
+    <div class="page-title">Your Profile</div>
+    <p class="page-sub">Manage your account and saved datasets</p>
+
+    <!-- Profile card -->
+    <div class="profile-card">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatar-display" onclick="document.getElementById('photo-input').click()">
+          <span id="avatar-initials">?</span>
+        </div>
+        <div class="avatar-edit" onclick="document.getElementById('photo-input').click()">✏️</div>
+        <input type="file" id="photo-input" accept="image/*" onchange="handlePhotoUpload(event)"/>
+      </div>
+
+      <div class="user-info">
+        <div class="user-name" id="user-name">Loading...</div>
+        <div class="user-email" id="user-email"></div>
+        <div class="user-role"><span id="user-role-icon">👤</span> <span id="user-role">Student</span></div>
+        <div class="user-joined" id="user-joined"></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num" id="saved-count">0</div><div class="stat-label">Saved Datasets</div></div>
+          <div class="stat"><div class="stat-num" id="role-datasets">8</div><div class="stat-label">Available Datasets</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved datasets -->
+    <div class="sec-title">🔖 Saved Datasets</div>
+    <div id="saved-datasets" class="grid">
+      <div class="spinner"></div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await Auth.requireAuth();
+  const user = Auth.user();
+  if (!user) return;
+
+  // Fill info
+  document.getElementById('user-name').textContent = user.name;
+  document.getElementById('user-email').textContent = user.email;
+  document.getElementById('user-role').textContent = user.role;
+  document.getElementById('user-role-icon').textContent = user.role === 'Scientist' ? '🔬' : '🎓';
+  document.getElementById('role-datasets').textContent = user.role === 'Scientist' ? '12' : '8';
+
+  // Avatar initials
+  const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('avatar-initials').textContent = initials;
+
+  // Load saved photo from localStorage
+  const savedPhoto = localStorage.getItem('geoProfilePhoto');
+  if (savedPhoto) setAvatarPhoto(savedPhoto);
+
+  // Load saved datasets
+  const container = document.getElementById('saved-datasets');
+  try {
+    const profile = await API.getProfile();
+    const savedIds = profile.savedDatasets || [];
+    document.getElementById('saved-count').textContent = savedIds.length;
+
+    if (!savedIds.length) {
+      container.innerHTML = '<p class="empty">No saved datasets yet. Browse datasets and click 🔖 Save!</p>';
+      return;
+    }
+
+    const datasets = await Promise.all(savedIds.map(id => API.getDataset(id).catch(() => null)));
+    const valid = datasets.filter(Boolean);
+
+    container.innerHTML = valid.map(d => `
+      <div class="card" onclick="location.href='dataset-details.html?id=${d.id}'">
+        <span class="tag tag-${d.event}">${d.event}</span>
+        <h4 style="font-size:14px;margin:8px 0 4px;color:var(--text)">${d.name}</h4>
+        <p style="color:var(--muted);font-size:12px">🛰 ${d.satellite}</p>
+      </div>
+    `).join('');
+  } catch {
+    container.innerHTML = '<p class="empty" style="color:#fca5a5">Failed to load saved datasets.</p>';
+  }
+});
+
+// ── Photo upload (stored in localStorage) ──────────────────────────────────
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    showToast('❌ Photo must be under 2MB');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    localStorage.setItem('geoProfilePhoto', dataUrl);
+    setAvatarPhoto(dataUrl);
+    showToast('✅ Profile photo updated!');
+  };
+  reader.readAsDataURL(file);
+}
+
+function setAvatarPhoto(dataUrl) {
+  const avatar = document.getElementById('avatar-display');
+  avatar.innerHTML = `<img src="${dataUrl}" alt="Profile photo"/>`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+<footer style="
+  border-top:1px solid rgba(100,180,255,0.15);
+  padding:16px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(200,225,255,0.35);
+  background:rgba(0,0,0,0.3);
+  font-family:'Space Grotesk',sans-serif;
+  position:relative;
+  z-index:1;
+">
+  © 2026 GeoDiscovery · Built by Shivani · Powered by NASA EONET API · All rights reserved
+</footer>
+</body>
+</html>
