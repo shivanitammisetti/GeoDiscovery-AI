@@ -12,55 +12,60 @@ Modern data exploration platforms often lack interactivity and personalization. 
 * Scalable backend APIs
 
 ---
-🚀 Features
-🔐 Authentication
+# 🚀 Features
+
+* Authentication
 User Registration & Login
 Secure backend validation
 
-📊 Dashboard
+* Dashboard
 Personalized user dashboard
 Dynamic navigation between modules
 
-🌌 Dataset Explorer
+* Dataset Explorer
 Search and explore datasets
 Dataset detail pages
 
-📝 Blogs
+* Blogs
 View blogs
 Blog detail pages
 
-📅 Events
+* Events
 Explore events and updates
 
-🌍 Globe Visualization
+* Globe Visualization
 Interactive globe page for exploration
 
-💬 Feedback System
+* Feedback System
 Users can submit feedback
 
-👤 Profile Management
+* Profile Management
 User profile page
 
-🤖 Recommendations (Planned/Basic)
+* Recommendations (Planned/Basic)
 Smart suggestions system
 
 
-⚙️ Setup Instructions
+# ⚙️ Setup Instructions
 1. Clone Repository
-```
-git clone https://github.com/shivanitammisetti/GeoDiscovery-AI.git
-cd GeoDiscovery-AI
-```
+    ```
+    git clone https://github.com/shivanitammisetti/GeoDiscovery-AI.git
+    cd GeoDiscovery-AI
+    ```
 2. Install Backend Dependencies
-```
-cd backend
-npm install
-```
+   ```
+    cd backend
+    npm install
+   ```
 3. Configure Environment Variables
-Create a .env file inside backend/:
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-4. Run Backend Server
-```
-npm start
-```
+   
+* Create a .env file inside backend/:
+
+*   PORT=5000
+
+*   MONGO_URI=your_mongodb_connection_string
+
+5. Run Backend Server
+    ```
+    npm start
+    ```
